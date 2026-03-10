@@ -88,9 +88,13 @@ export type CustomVisualizationSettingsDefinitions = {
 };
 
 export type VisualizationGridSize = {
-  // grid columns
+  /**
+   * Number of grid columns in a Metabase dashboard.
+   */
   width: number;
-  // grid rows
+  /**
+   * Number of grid rows in a Metabase dashboard.
+   */
   height: number;
 };
 
