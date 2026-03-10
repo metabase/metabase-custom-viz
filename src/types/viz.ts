@@ -14,11 +14,12 @@ export type CreateCustomVisualizationProps<CustomVisualizationSettings> = {
    */
   translate: (text: string) => string;
 
-  /**
-   * TODO: all the isa.js functions
-   *
-   */
   settings: CustomVisualizationSettings;
+
+  /**
+   * TODO: add all the isa.js functions, ideally in a single object.
+   * https://linear.app/metabase/issue/GDGT-1923/convert-isajs-to-typescript
+   */
 };
 
 export type CustomVisualization<CustomVisualizationSettings> = {
@@ -42,6 +43,7 @@ export type CustomVisualization<CustomVisualizationSettings> = {
    */
   noHeader?: boolean;
 
+  // TODO
   disableSettingsConfig?: boolean;
   supportPreviewing?: boolean;
   supportsVisualizer?: boolean;
