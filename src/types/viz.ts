@@ -1,0 +1,104 @@
+import type { ComponentType } from 'react';
+import { DatasetData, Series } from './data';
+
+/**
+ * Export this function to define a custom visualization.
+ */
+export type CreateCustomVisualization = <CustomVisualizationSettings>(
+  props: CreateCustomVisualizationProps<CustomVisualizationSettings>,
+) => CustomVisualization<CustomVisualizationSettings>;
+
+export type CreateCustomVisualizationProps<CustomVisualizationSettings> = {
+  /**
+   * Translates text using ttag function used in Metabase.
+   */
+  translate: (text: string) => string;
+
+  /**
+   * TODO: all the isa.js functions
+   *
+   */
+  settings: CustomVisualizationSettings;
+};
+
+export type CustomVisualization<CustomVisualizationSettings> = {
+  /**
+   * A unique visualization identifier. It's not shown in the UI.
+   */
+  id: string;
+
+  /**
+   * Returns visualization name to be shown in the UI.
+   */
+  getName(): string;
+
+  /**
+   * Set to false to disable saving the question as PNG.
+   */
+  canSavePng?: boolean;
+
+  /**
+   * Set to true to disable the default visulization header.
+   */
+  noHeader?: boolean;
+
+  disableSettingsConfig?: boolean;
+  supportPreviewing?: boolean;
+  supportsVisualizer?: boolean;
+  disableVisualizer?: boolean;
+
+  minSize: VisualizationGridSize;
+  defaultSize: VisualizationGridSize;
+
+  settings?: CustomVisualizationSettingsDefinitions;
+
+  /**
+   * This function should return true if the data shape makes sense for this visualization.
+   */
+  isSensible: (data: DatasetData) => boolean;
+
+  /**
+   * This function should throw if the visualization cannot be rendered with given data and settings.
+   */
+  checkRenderable: (series: Series, settings: CustomVisualizationSettings) => void | never;
+
+  /**
+   * Component that renders the visualization.
+   */
+  VisualizationComponent: ComponentType<CustomVisualizationProps>;
+
+  /**
+   * Component that renders the visualization's empty state (i.e. when checkRenderable throws).
+   */
+  VisualizationEmptyStateComponent?: ComponentType<CustomVisualizationProps>;
+
+  /**
+   * Component that renders the icon in visualization settings sidebar and in custom visualization manager.
+   */
+  VisualizationIconComponent: ComponentType<CustomVisualizationIconProps>;
+
+  /**
+   * Component that renders the visualization settings form in visualization settings sidebar.
+   */
+  VisualizationSettingsComponent?: ComponentType<CustomVisualizationSettingsProps>;
+};
+
+export type CustomVisualizationSettingsDefinitions = {
+  // TODO
+};
+
+export type VisualizationGridSize = {
+  // grid columns
+  width: number;
+  // grid rows
+  height: number;
+};
+
+export type CustomVisualizationProps = {};
+
+export type CustomVisualizationIconProps = {
+  width: number;
+  height: number;
+};
+
+export type CustomVisualizationSettingsProps = {};

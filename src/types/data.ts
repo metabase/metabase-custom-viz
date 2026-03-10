@@ -1,0 +1,96 @@
+import { DateTimeUnit } from './date-time';
+
+export type ColumnVisualizationSettings = Record<string, unknown>; // TODO
+
+export type RowValue = string | number | null | boolean | object;
+
+export type Row = RowValue[];
+
+export type DatasetData = {
+  rows: Row[];
+
+  cols: Column[];
+
+  /**
+   * How many results have been truncated. Present only when truncation occurred.
+   */
+  rows_truncated?: number;
+};
+
+export type SingleSeries = {};
+
+export type Series = SingleSeries[];
+
+export type BinningInfo = {
+  binning_strategy?: 'default' | 'bin-width' | 'num-bins';
+  bin_width?: number;
+  num_bins?: number;
+  max_value?: number;
+  min_value?: number;
+};
+
+export type ColumnId = number;
+
+export type Column = {
+  /**
+   * Metabase identifier.
+   */
+  id: ColumnId;
+
+  /**
+   * Name of the column in the database.
+   */
+  name: string;
+
+  /**
+   * Name of the column shown in the UI.
+   */
+  display_name: string;
+
+  /**
+   * Description of the column set in Metabase.
+   */
+  description: string | null;
+
+  /**
+   * Base type of the column in Metabase type system.
+   */
+  base_type?: string;
+
+  /**
+   * Semantic type of the column in Metabase type system.
+   */
+  semantic_type?: string | null;
+
+  /**
+   * Effective type of the column in Metabase type system.
+   */
+  effective_type?: string;
+
+  /**
+   * If the column value has been remapped, this is a name of the column it's been remapped from.
+   */
+  remapped_from?: string;
+
+  /**
+   * If the column value has been remapped, this is a name of the column it's been remapped to.
+   */
+  remapped_to?: string;
+
+  /**
+   * DatetimeUnit - present if column represents date and/or time.
+   */
+  unit?: DateTimeUnit;
+
+  /**
+   * DatetimeUnit - present if column represents date and/or time.
+   */
+  binning_info?: BinningInfo | null;
+
+  /**
+   * Column's visualization settings set in Metabase.
+   */
+  settings?: VisualizationSettings;
+};
+
+export type VisualizationSettings = Record<string, unknown>; //TODO
