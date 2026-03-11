@@ -89,12 +89,12 @@ export type Column = {
   remapped_to?: string;
 
   /**
-   * DatetimeUnit - present if column represents date and/or time.
+   * Present if column represents date and/or time.
    */
   unit?: DateTimeUnit;
 
   /**
-   * DatetimeUnit - present if column represents date and/or time.
+   * Present if column is binned.
    */
   binning_info?: BinningInfo | null;
 
