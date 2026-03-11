@@ -1,7 +1,5 @@
 import { DateTimeUnit } from './date-time';
 
-export type ColumnVisualizationSettings = Record<string, unknown>; // TODO
-
 export type RowValue = string | number | null | boolean | object;
 
 export type Row = RowValue[];
@@ -103,7 +101,7 @@ export type Column = {
   /**
    * Column's visualization settings set in Metabase.
    */
-  settings?: VisualizationSettings;
+  settings?: ColumnVisualizationSettings;
 };
 
-export type VisualizationSettings = Record<string, unknown>; //TODO
+export type ColumnVisualizationSettings = Record<string, unknown>; //TODO
