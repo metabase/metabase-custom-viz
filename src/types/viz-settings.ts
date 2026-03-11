@@ -91,13 +91,9 @@ export type FieldsProps = {
   showColumnSettingForIndicies?: number[];
 };
 
-// export type FieldsPartitionProps = {};
-
 export type ColorProps = {
   title?: string;
 };
-
-// export type ColorsProps = {};
 
 export type MultiselectProps = {
   options: {
