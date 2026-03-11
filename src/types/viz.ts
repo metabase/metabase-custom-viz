@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 import { Column, DatasetData, RowValue, Series } from './data';
+import { WidgetName } from './viz-settings';
 
 /**
  * Export this function to define a custom visualization.
@@ -43,16 +44,15 @@ export type CustomVisualization<CustomVisualizationSettings> = {
    */
   noHeader?: boolean;
 
-  // TODO
-  disableSettingsConfig?: boolean;
-  supportPreviewing?: boolean;
-  supportsVisualizer?: boolean;
-  disableVisualizer?: boolean;
+  // disableSettingsConfig?: boolean;
+  // supportPreviewing?: boolean;
+  // supportsVisualizer?: boolean;
+  // disableVisualizer?: boolean;
 
   minSize: VisualizationGridSize;
   defaultSize: VisualizationGridSize;
 
-  settings?: CustomVisualizationSettingsDefinitions;
+  settings?: CustomVisualizationSettingsDefinitions<CustomVisualizationSettings>;
 
   /**
    * This function should return true if the data shape makes sense for this visualization.
@@ -88,8 +88,53 @@ export type CustomVisualization<CustomVisualizationSettings> = {
   VisualizationSettingsComponent?: ComponentType<CustomVisualizationSettingsProps>;
 };
 
-export type CustomVisualizationSettingsDefinitions = {
+export type CustomVisualizationSettingsDefinitions<
+  CustomVisualizationSettings,
+  K = keyof CustomVisualizationSettings,
+> = {
   // TODO
+  // [K]:
+};
+
+export type BaseWidgetProps<TValue, CustomVisualizationSettings> = {
+  id: string;
+  value: TValue | undefined;
+  onChange: (value?: TValue | null) => void;
+  onChangeSettings: (settings: Partial<CustomVisualizationSettings>) => void;
+};
+
+// TODO: infer TProps for built-in widgets
+export type VisualizationSettingDefinition<T, TValue, TProps, CustomVisualizationSettings> = {
+  id: string;
+  section?: string;
+  title?: string;
+  group?: string;
+  index?: number;
+  inline?: boolean;
+
+  default?: TValue;
+  persistDefault?: boolean;
+  set?: boolean;
+  value?: TValue;
+
+  readDependencies?: string[];
+  writeDependencies?: string[];
+  eraseDependencies?: string[];
+
+  widget?:
+    | WidgetName
+    | ComponentType<TProps & BaseWidgetProps<TValue, CustomVisualizationSettings>>;
+
+  isValid?: (object: T, settings: CustomVisualizationSettings) => boolean;
+  getDefault?: (object: T, settings: CustomVisualizationSettings) => TValue;
+  getDisabled?: (object: T, settings: CustomVisualizationSettings) => boolean;
+  getProps?: (
+    object: T,
+    vizSettings: CustomVisualizationSettings,
+    onChange: (value: TValue) => void,
+    onChangeSettings: (value: Partial<CustomVisualizationSettings>) => void,
+  ) => TProps;
+  getValue?: (object: T, settings: CustomVisualizationSettings) => TValue;
 };
 
 export type VisualizationGridSize = {
@@ -114,6 +159,8 @@ export type CustomVisualizationProps<CustomVisualizationSettings> = {
   settings: CustomVisualizationSettings;
 
   onClick: (clickObject: ClickObject<CustomVisualizationSettings> | null) => void;
+
+  // onHoverChange: (hoverObject?: HoveredObject | null) => void;
 };
 
 export type CustomVisualizationIconProps = {
