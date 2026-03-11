@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import { DatasetData, Series } from './data';
+import { Column, DatasetData, RowValue, Series } from './data';
 
 /**
  * Export this function to define a custom visualization.
@@ -56,6 +56,7 @@ export type CustomVisualization<CustomVisualizationSettings> = {
 
   /**
    * This function should return true if the data shape makes sense for this visualization.
+   * TODO: should it get series: Series instead?
    */
   isSensible: (data: DatasetData) => boolean;
 
@@ -67,12 +68,14 @@ export type CustomVisualization<CustomVisualizationSettings> = {
   /**
    * Component that renders the visualization.
    */
-  VisualizationComponent: ComponentType<CustomVisualizationProps>;
+  VisualizationComponent: ComponentType<CustomVisualizationProps<CustomVisualizationSettings>>;
 
   /**
    * Component that renders the visualization's empty state (i.e. when checkRenderable throws).
    */
-  VisualizationEmptyStateComponent?: ComponentType<CustomVisualizationProps>;
+  VisualizationEmptyStateComponent?: ComponentType<
+    CustomVisualizationProps<CustomVisualizationSettings>
+  >;
 
   /**
    * Component that renders the icon in visualization settings sidebar and in custom visualization manager.
@@ -94,13 +97,24 @@ export type VisualizationGridSize = {
    * Number of grid columns in a Metabase dashboard.
    */
   width: number;
+
   /**
    * Number of grid rows in a Metabase dashboard.
    */
   height: number;
 };
 
-export type CustomVisualizationProps = {};
+export type CustomVisualizationProps<CustomVisualizationSettings> = {
+  width: number;
+
+  height: number;
+
+  series: Series;
+
+  settings: CustomVisualizationSettings;
+
+  onClick: (clickObject: ClickObject<CustomVisualizationSettings> | null) => void;
+};
 
 export type CustomVisualizationIconProps = {
   width: number;
@@ -108,3 +122,26 @@ export type CustomVisualizationIconProps = {
 };
 
 export type CustomVisualizationSettingsProps = {};
+
+export type ClickObject<CustomVisualizationSettings> = {
+  value?: RowValue;
+  column?: Column;
+  dimensions?: ClickObjectDimension[];
+  event?: MouseEvent;
+  element?: Element;
+  // seriesIndex?: number;
+  // cardId?: CardId;
+  settings?: CustomVisualizationSettings;
+  // columnShortcuts?: boolean;
+  origin?: {
+    row: RowValue[];
+    cols: Column[];
+  };
+  // extraData?: Record<string, unknown>;
+  // data?: ClickObjectDataRow[];
+};
+
+export interface ClickObjectDimension {
+  value: RowValue;
+  column: Column;
+}
