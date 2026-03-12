@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import { Column, DatasetData, RowValue, Series } from './data';
-import { WidgetName } from './viz-settings';
+import { WidgetName, Widgets } from './viz-settings';
 
 /**
  * Export this function to define a custom visualization.
@@ -83,11 +83,6 @@ export type CustomVisualization<CustomVisualizationSettings> = {
   >;
 
   /**
-   * Component that renders the icon in visualization settings sidebar and in custom visualization manager.
-   */
-  VisualizationIconComponent: ComponentType<CustomVisualizationIconProps>;
-
-  /**
    * Component that renders the visualization settings form in visualization settings sidebar.
    */
   VisualizationSettingsComponent?: ComponentType<CustomVisualizationSettingsProps>;
@@ -95,10 +90,14 @@ export type CustomVisualization<CustomVisualizationSettings> = {
 
 export type CustomVisualizationSettingsDefinitions<
   CustomVisualizationSettings,
-  K = keyof CustomVisualizationSettings,
+  K extends keyof CustomVisualizationSettings = keyof CustomVisualizationSettings,
 > = {
-  // TODO
-  // [K]:
+  [Key in K]-?: VisualizationSettingDefinition<
+    unknown,
+    CustomVisualizationSettings[Key],
+    Record<string, unknown>,
+    CustomVisualizationSettings
+  >;
 };
 
 export type BaseWidgetProps<TValue, CustomVisualizationSettings> = {
@@ -109,7 +108,7 @@ export type BaseWidgetProps<TValue, CustomVisualizationSettings> = {
 };
 
 // TODO: infer TProps for built-in widgets
-export type VisualizationSettingDefinition<T, TValue, TProps, CustomVisualizationSettings> = {
+type VisualizationSettingDefinitionBase<T, TValue, CustomVisualizationSettings> = {
   id: string;
   section?: string;
   title?: string;
@@ -126,16 +125,43 @@ export type VisualizationSettingDefinition<T, TValue, TProps, CustomVisualizatio
   writeDependencies?: string[];
   eraseDependencies?: string[];
 
-  widget?:
-    | WidgetName
-    | ComponentType<TProps & BaseWidgetProps<TValue, CustomVisualizationSettings>>;
-
   isValid?: (object: T, settings: CustomVisualizationSettings) => boolean;
   getDefault?: (object: T, settings: CustomVisualizationSettings) => TValue;
   getDisabled?: (object: T, settings: CustomVisualizationSettings) => boolean;
-  getProps?: (object: T, vizSettings: CustomVisualizationSettings) => TProps;
   getValue?: (object: T, settings: CustomVisualizationSettings) => TValue;
 };
+
+type VisualizationSettingDefinitionWithBuiltInWidget<T, TValue, CustomVisualizationSettings> = {
+  [Key in WidgetName]: VisualizationSettingDefinitionBase<
+    T,
+    TValue,
+    CustomVisualizationSettings
+  > & {
+    widget: Key;
+    getProps?: (object: T, vizSettings: CustomVisualizationSettings) => Widgets[Key];
+  };
+}[WidgetName];
+
+type VisualizationSettingDefinitionWithCustomWidget<
+  T,
+  TValue,
+  TProps,
+  CustomVisualizationSettings,
+> = VisualizationSettingDefinitionBase<T, TValue, CustomVisualizationSettings> & {
+  widget: ComponentType<TProps & BaseWidgetProps<TValue, CustomVisualizationSettings>>;
+  getProps?: (object: T, vizSettings: CustomVisualizationSettings) => TProps;
+};
+
+type VisualizationSettingDefinitionWithoutWidget<T, TValue, CustomVisualizationSettings> =
+  VisualizationSettingDefinitionBase<T, TValue, CustomVisualizationSettings> & {
+    widget?: never;
+    getProps?: never;
+  };
+
+export type VisualizationSettingDefinition<T, TValue, TProps, CustomVisualizationSettings> =
+  | VisualizationSettingDefinitionWithBuiltInWidget<T, TValue, CustomVisualizationSettings>
+  | VisualizationSettingDefinitionWithCustomWidget<T, TValue, TProps, CustomVisualizationSettings>
+  | VisualizationSettingDefinitionWithoutWidget<T, TValue, CustomVisualizationSettings>;
 
 export type VisualizationGridSize = {
   /**
@@ -161,11 +187,6 @@ export type CustomVisualizationProps<CustomVisualizationSettings> = {
   onClick: (clickObject: ClickObject<CustomVisualizationSettings> | null) => void;
 
   // onHoverChange: (hoverObject?: HoveredObject | null) => void;
-};
-
-export type CustomVisualizationIconProps = {
-  width: number;
-  height: number;
 };
 
 export type CustomVisualizationSettingsProps = {};
