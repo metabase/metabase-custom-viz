@@ -44,14 +44,19 @@ export type CustomVisualization<CustomVisualizationSettings> = {
    */
   noHeader?: boolean;
 
-  // disableSettingsConfig?: boolean;
-  // supportPreviewing?: boolean;
-  // supportsVisualizer?: boolean;
-  // disableVisualizer?: boolean;
-
+  /**
+   * Min size on dashboard grid.
+   */
   minSize: VisualizationGridSize;
+
+  /**
+   * Default size on dashboard grid.
+   */
   defaultSize: VisualizationGridSize;
 
+  /**
+   * Visualization settings definitions.
+   */
   settings?: CustomVisualizationSettingsDefinitions<CustomVisualizationSettings>;
 
   /**
@@ -128,12 +133,7 @@ export type VisualizationSettingDefinition<T, TValue, TProps, CustomVisualizatio
   isValid?: (object: T, settings: CustomVisualizationSettings) => boolean;
   getDefault?: (object: T, settings: CustomVisualizationSettings) => TValue;
   getDisabled?: (object: T, settings: CustomVisualizationSettings) => boolean;
-  getProps?: (
-    object: T,
-    vizSettings: CustomVisualizationSettings,
-    onChange: (value: TValue) => void,
-    onChangeSettings: (value: Partial<CustomVisualizationSettings>) => void,
-  ) => TProps;
+  getProps?: (object: T, vizSettings: CustomVisualizationSettings) => TProps;
   getValue?: (object: T, settings: CustomVisualizationSettings) => TValue;
 };
 
