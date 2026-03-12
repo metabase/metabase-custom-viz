@@ -13,9 +13,7 @@ export type Widgets = {
   segmentedControl: SegmentedControlProps;
   field: FieldProps;
   fields: FieldsProps;
-  // fieldsPartition: FieldsPartitionProps;
   color: ColorProps;
-  // colors: ColorsProps;
   multiselect: MultiselectProps;
 };
 
@@ -39,18 +37,12 @@ export type RadioProps = {
 };
 
 export type SelectProps = {
-  // defaultDropdownOpened?: boolean;
-  // footer?: ReactNode;
-  // leftSection?: ReactNode;
   options: {
     name: string;
     value: boolean | string | null;
   }[];
   placeholder?: string;
   placeholderNoOptions?: string;
-  // rightSection?: ReactNode;
-  // rightSectionWidth?: CSSProperties['width'];
-  // w?: CSSProperties['width'];
 };
 
 export type ToggleProps = {};
@@ -59,15 +51,10 @@ export type SegmentedControlProps = {
   options: {
     name: string;
     value: string;
-    // icon?: IconName;
   }[];
 };
 
 export type FieldProps = {
-  /**
-   * Defaults to true.
-   */
-  autoOpenWhenUnset?: boolean;
   columns: Column[];
   options: {
     name: string;
@@ -78,10 +65,6 @@ export type FieldProps = {
 
 export type FieldsProps = {
   addAnother?: ReactNode;
-  /**
-   * Defaults to true.
-   */
-  autoOpenWhenUnset?: boolean;
   columns: Column[];
   options: {
     name: string;

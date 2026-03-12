@@ -15,8 +15,6 @@ export type DatasetData = {
   rows_truncated?: number;
 };
 
-export type JsonQuery = unknown; // TODO
-
 export type DatasetError =
   | string
   | {
@@ -27,7 +25,6 @@ export type DatasetError =
 export type SingleSeries = {
   data: DatasetData;
   error?: DatasetError;
-  json_query?: JsonQuery;
 };
 
 export type Series = SingleSeries[];
