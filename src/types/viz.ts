@@ -5,7 +5,7 @@ import { WidgetName } from './viz-settings';
 /**
  * Export this function to define a custom visualization.
  */
-export type CreateCustomVisualization = <CustomVisualizationSettings>(
+export type CreateCustomVisualization<CustomVisualizationSettings> = (
   props: CreateCustomVisualizationProps<CustomVisualizationSettings>,
 ) => CustomVisualization<CustomVisualizationSettings>;
 
