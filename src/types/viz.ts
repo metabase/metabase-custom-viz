@@ -15,7 +15,7 @@ export type CreateCustomVisualizationProps<CustomVisualizationSettings> = {
    */
   translate: (text: string) => string;
 
-  settings: CustomVisualizationSettings;
+  // settings: CustomVisualizationSettings;
 
   /**
    * TODO: add all the isa.js functions, ideally in a single object.

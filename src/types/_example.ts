@@ -4,11 +4,13 @@ import {
   CustomVisualizationProps,
 } from './viz';
 
-type MySettings = {
+type MyVizSettings = {
   apiKey?: string;
 };
 
-export const createMyViz: CreateCustomVisualization<MySettings> = () => {
+export const createMyViz: CreateCustomVisualization<MyVizSettings> = ({
+
+}) => {
   return {
     id: 'my-custom-viz',
     getName: () => 'My custom viz',
@@ -20,15 +22,20 @@ export const createMyViz: CreateCustomVisualization<MySettings> = () => {
     checkRenderable(_series, settings) {
       return settings.apiKey && settings.apiKey.length > 0;
     },
+    settings: {
+
+    },
     VisualizationComponent: MyVizComponent,
     VisualizationIconComponent: MyVizIconComponent,
   };
 };
 
-const MyVizComponent = (props: CustomVisualizationProps<MySettings>) => {
+const MyVizComponent = (props: CustomVisualizationProps<MyVizSettings>) => {
   return null;
 };
 
 const MyVizIconComponent = (props: CustomVisualizationIconProps) => {
   return null;
 };
+
+window.registerCustomViz(createMyViz);
