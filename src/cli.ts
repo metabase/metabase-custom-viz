@@ -10,20 +10,12 @@ program
   .version("0.0.1");
 
 program
-  .command("generate")
-  .description("Generate a new custom visualization scaffold")
+  .command("init")
+  .description("Scaffold a new custom visualization")
   .argument("<name>", "Name of the custom visualization")
   .action((name: string) => {
-    console.log(`Generating custom visualization: ${name}`);
+    console.log(`Scaffolding custom visualization: ${name}`);
     // TODO: implement scaffolding
-  });
-
-program
-  .command("bundle")
-  .description("Bundle the custom visualization for deployment")
-  .action(() => {
-    console.log("Bundling custom visualization...");
-    // TODO: implement bundling
   });
 
 program.parse();

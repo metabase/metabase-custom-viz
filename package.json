@@ -1,7 +1,7 @@
 {
   "name": "@metabase/custom-viz",
   "version": "0.0.1",
-  "description": "CLI for creating and bundling custom visualizations for Metabase",
+  "description": "CLI for creating custom visualizations for Metabase",
   "type": "module",
   "bin": {
     "metabase-custom-viz": "dist/cli.js"
