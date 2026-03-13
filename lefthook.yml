@@ -1,0 +1,10 @@
+pre-commit:
+  parallel: false
+  jobs:
+    - name: format
+      glob: "*.{ts,tsx,js,json,yml,yaml,css,html}"
+      run: npx prettier --check {staged_files}
+
+    - name: lint
+      glob: "*.{ts,tsx}"
+      run: npx oxlint {staged_files}
